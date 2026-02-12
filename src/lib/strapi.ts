@@ -202,6 +202,7 @@ interface ServicesPage {
   processSubtitle?: string;
   processTitle?: string;
   ctaTitle?: string;
+  ctaButtonText?: string;
   ctaDescription?: string;
   contentSections?: ContentSectionType[];
 }
