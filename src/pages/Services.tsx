@@ -66,19 +66,34 @@ const ServicesPage = () => {
 
   const outcomes = [
     {
-      icon: ClarityIcon,
+      icon: "ClarityIcon",
       title: "Confident Communication for Client-Facing Teams",
       description: "Build confidence and presence in client interactions. Ideal for professionals in sales, consulting, and customer service.",
     },
     {
-      icon: ConfidenceIcon,
+      icon: "ConfidenceIcon",
       title: "Professional Presence & Brand Representation",
       description: "Develop the professional image and etiquette that enhances brand representation. Ideal for client-facing roles.",
     },
     {
-      icon: ConnectionIcon,
+      icon: "ConnectionIcon",
       title: "Communication Under Pressure",
       description: "Maintain composure and effectiveness in high-pressure client situations. Ideal for teams dealing with challenging client engagements.",
+    },
+  ];
+
+  const process = [
+    {
+      title: "In-Person",
+      description: "Interactive workshops and coaching sessions conducted face-to-face for maximum engagement and impact.",
+    },
+    {
+      title: "Virtual",
+      description: "Online workshops and coaching sessions delivered remotely, ensuring accessibility and convenience.",
+    },
+    {
+      title: "Hybrid",
+      description: "A combination of in-person and virtual delivery, offering flexibility to meet diverse organisational needs.",
     },
   ];
 
@@ -112,6 +127,11 @@ const ServicesPage = () => {
     ? pageData.heroTitle.split('\n')
     : ["Practical, Application-Driven", "Programmes"];
 
+  // Get benefits title lines from CMS or fallback
+  const benefitsTitleLines = pageData?.benefitsTitle
+    ? pageData.benefitsTitle.split('\n')
+    : ["Leadership", "Communication", "Development"];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -142,23 +162,30 @@ const ServicesPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
             <div className="text-center md:text-left">
-              <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">CORPORATE PROGRAMMES</p>
+              <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
+                {loading ? 'Loading...' : pageData?.benefitsSubtitle || 'CORPORATE PROGRAMMES'}
+              </p>
               <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-6 text-center md:text-left">
-                {loading ? 'Loading...' : pageData?.benefitsTitle || 'Leadership'} <br />
-                {loading ? 'Loading...' : (pageData?.benefitsTitle ? '' : 'Communication')} <br />
-                {loading ? 'Loading...' : (pageData?.benefitsTitle ? '' : 'Development')}
+                {benefitsTitleLines.map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < benefitsTitleLines.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                 {loading ? 'Loading...' : pageData?.benefitsDescription || 'Our programmes strengthen how leaders communicate, show up and influence, particularly where clarity, confidence and credibility are critical.'}
               </p>
 
               <ul className="space-y-4">
-                {benefits.map((benefit, index) => (
+                {(pageData?.benefitsList || benefits).map((benefit, index) => (
                   <li key={index} className="flex flex-col md:flex-row items-center md:items-start gap-3">
                     <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0">
                       <Check className="w-4 h-4 text-primary" />
                     </div>
-                    <span className="text-foreground text-center md:text-left break-words">{benefit}</span>
+                    <span className="text-foreground text-center md:text-left break-words">
+                      {typeof benefit === 'string' ? benefit : benefit}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -182,7 +209,9 @@ const ServicesPage = () => {
       <section className="py-24 bg-background">
         <div className="mx-auto px-6 w-full max-w-full">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">CLIENT-FACING & CUSTOMER ENGAGEMENT</p>
+            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
+              {loading ? 'Loading...' : pageData?.outcomesSubtitle || 'CLIENT-FACING & CUSTOMER ENGAGEMENT'}
+            </p>
             <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-6">
               {loading ? 'Loading...' : pageData?.outcomesTitle || 'Building Confidence in Client Interactions'}
             </h2>
@@ -192,25 +221,37 @@ const ServicesPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {outcomes.map((outcome, index) => (
-              <div
-                key={index}
-                className="group bg-card rounded-lg p-8 border border-primary md:border-primary/20 md:border-2 hover:border-primary/80 transition-all duration-300 text-center animate-border-flash"
-              >
-                <div className="text-center mb-4">
-                  <div className="text-3xl font-bold text-primary mb-2">{index + 1}</div>
-                  <div className="w-16 h-16 rounded-lg flex items-center justify-center mx-auto">
-                    <outcome.icon />
+            {(pageData?.outcomesList || outcomes).map((outcome, index) => {
+              const getIcon = () => {
+                const iconName = typeof outcome === 'object' && outcome.icon ? outcome.icon : outcome.icon;
+                switch (iconName) {
+                  case 'ClarityIcon': return <ClarityIcon />;
+                  case 'ConfidenceIcon': return <ConfidenceIcon />;
+                  case 'ConnectionIcon': return <ConnectionIcon />;
+                  default: return index === 0 ? <ClarityIcon /> : index === 1 ? <ConfidenceIcon /> : <ConnectionIcon />;
+                }
+              };
+              const outcomeData = typeof outcome === 'object' ? outcome : outcome;
+              return (
+                <div
+                  key={index}
+                  className="group bg-card rounded-lg p-8 border border-primary md:border-primary/20 md:border-2 hover:border-primary/80 transition-all duration-300 text-center animate-border-flash"
+                >
+                  <div className="text-center mb-4">
+                    <div className="text-3xl font-bold text-primary mb-2">{index + 1}</div>
+                    <div className="w-16 h-16 rounded-lg flex items-center justify-center mx-auto">
+                      {getIcon()}
+                    </div>
                   </div>
+                  <h3 className="text-xl font-semibold text-primary mb-3">
+                    {outcomeData.title}
+                  </h3>
+                  <p className="text-primary leading-relaxed">
+                    {outcomeData.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-primary mb-3">
-                  {outcome.title}
-                </h3>
-                <p className="text-primary leading-relaxed">
-                  {outcome.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -219,7 +260,9 @@ const ServicesPage = () => {
       <section className="py-24 bg-secondary">
         <div className="container mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">DELIVERY FORMATS</p>
+            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
+              {loading ? 'Loading...' : pageData?.processSubtitle || 'DELIVERY FORMATS'}
+            </p>
             <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-6">
               {loading ? 'Loading...' : pageData?.processTitle || 'Flexible Delivery Options'}
             </h2>
@@ -227,41 +270,21 @@ const ServicesPage = () => {
 
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                  <div className="text-6xl font-bold text-primary animate-number-flash">1</div>
+              {(pageData?.processList || process).map((item, index) => {
+                const processData = typeof item === 'object' ? item : item;
+                return (
+                <div key={index} className="text-center">
+                  <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                    <div className="text-6xl font-bold text-primary animate-number-flash">{index + 1}</div>
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    {processData.title}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {processData.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  In-Person
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Interactive workshops and coaching sessions conducted face-to-face for maximum engagement and impact.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                  <div className="text-6xl font-bold text-primary animate-number-flash">2</div>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Virtual
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Online workshops and coaching sessions delivered remotely, ensuring accessibility and convenience.
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6">
-                  <div className="text-6xl font-bold text-primary animate-number-flash">3</div>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-3">
-                  Hybrid
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  A combination of in-person and virtual delivery, offering flexibility to meet diverse organisational needs.
-                </p>
-              </div>
+              )})}
             </div>
           </div>
         </div>

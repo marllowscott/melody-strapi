@@ -196,11 +196,14 @@ interface ServicesPage {
   benefitsSubtitle?: string;
   benefitsTitle?: string;
   benefitsDescription?: string;
+  benefitsList?: string[];
   outcomesSubtitle?: string;
   outcomesTitle?: string;
   outcomesDescription?: string;
+  outcomesList?: Array<{icon?: string; title?: string; description?: string}>;
   processSubtitle?: string;
   processTitle?: string;
+  processList?: Array<{title?: string; description?: string}>;
   ctaTitle?: string;
   ctaButtonText?: string;
   ctaDescription?: string;

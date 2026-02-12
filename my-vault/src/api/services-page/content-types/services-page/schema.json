@@ -47,6 +47,15 @@
       "type": "text",
       "default": "Our programmes strengthen how leaders communicate, show up and influence, particularly where clarity, confidence and credibility are critical."
     },
+    "benefitsList": {
+      "type": "json",
+      "default": [
+        "Leadership Communication & Executive Presence: Strengthen how leaders communicate and show up in high-stakes environments. Ideal for executives and senior leaders.",
+        "Public Speaking for Leaders: Master the art of delivering impactful presentations and speeches. Ideal for leaders who need to influence and inspire audiences.",
+        "Leadership Visibility & Stakeholder Presence: Enhance visibility and build stronger stakeholder relationships. Ideal for leaders focused on influence and networking.",
+        "Executive Presence [including professional image & etiquette]: Develop the gravitas and authority that commands attention. Ideal for professionals building executive presence."
+      ]
+    },
     "outcomesSubtitle": {
       "type": "string",
       "default": "CLIENT-FACING & CUSTOMER ENGAGEMENT"
@@ -59,6 +68,26 @@
       "type": "text",
       "default": "Programmes designed to enhance communication and presence in client-facing roles."
     },
+    "outcomesList": {
+      "type": "json",
+      "default": [
+        {
+          "icon": "ClarityIcon",
+          "title": "Confident Communication for Client-Facing Teams",
+          "description": "Build confidence and presence in client interactions. Ideal for professionals in sales, consulting, and customer service."
+        },
+        {
+          "icon": "ConfidenceIcon",
+          "title": "Professional Presence & Brand Representation",
+          "description": "Develop the professional image and etiquette that enhances brand representation. Ideal for client-facing roles."
+        },
+        {
+          "icon": "ConnectionIcon",
+          "title": "Communication Under Pressure",
+          "description": "Maintain composure and effectiveness in high-pressure client situations. Ideal for teams dealing with challenging client engagements."
+        }
+      ]
+    },
     "processSubtitle": {
       "type": "string",
       "default": "DELIVERY FORMATS"
@@ -66,6 +95,23 @@
     "processTitle": {
       "type": "string",
       "default": "Flexible Delivery Options"
+    },
+    "processList": {
+      "type": "json",
+      "default": [
+        {
+          "title": "In-Person",
+          "description": "Interactive workshops and coaching sessions conducted face-to-face for maximum engagement and impact."
+        },
+        {
+          "title": "Virtual",
+          "description": "Online workshops and coaching sessions delivered remotely, ensuring accessibility and convenience."
+        },
+        {
+          "title": "Hybrid",
+          "description": "A combination of in-person and virtual delivery, offering flexibility to meet diverse organisational needs."
+        }
+      ]
     },
     "ctaTitle": {
       "type": "string",
