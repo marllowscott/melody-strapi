@@ -4,7 +4,8 @@
   "info": {
     "singularName": "book-page",
     "pluralName": "book-pages",
-    "displayName": "Book Page"
+    "displayName": "Book Page",
+    "description": "Speaking & Coaching page with hero, features section, form and CTA"
   },
   "options": {
     "draftAndPublish": false
@@ -15,12 +16,17 @@
     }
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "subtitle": {
-      "type": "string"
+      "type": "string",
+      "default": "SPEAKING & COACHING"
+    },
+    "heroTitle": {
+      "type": "text",
+      "default": "Melody\nConfidence Coach &\nLeadership Consultant"
+    },
+    "heroDescription": {
+      "type": "text",
+      "default": "Melody specialises in leadership communication, executive presence and visibility. She works with executives, professionals and emerging leaders to strengthen how they show up, communicate and influence, particularly in meetings, presentations, client engagements and other high-stakes moments."
     },
     "heroImage": {
       "type": "media",
@@ -29,8 +35,21 @@
         "images"
       ]
     },
-    "bookingLink": {
-      "type": "string"
+    "formTitle": {
+      "type": "string",
+      "default": "Get In Touch"
+    },
+    "formDescription": {
+      "type": "text",
+      "default": "Interested in coaching or speaking? Let's discuss how we can work together."
+    },
+    "formSubmitText": {
+      "type": "string",
+      "default": "Submit Inquiry"
+    },
+    "formResponseMessage": {
+      "type": "text",
+      "default": "I typically respond within 24-48 hours."
     },
     "contentSections": {
       "type": "dynamiczone",

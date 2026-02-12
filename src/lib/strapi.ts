@@ -35,33 +35,6 @@ interface Button {
   link: string;
 }
 
-interface Homepage {
-  id: number;
-  logo?: {
-    data: {
-      attributes: MediaFile;
-    };
-  };
-  navbar: NavLink[];
-  heroTitle: string;
-  heroSubtitle: string;
-  heroButtons: Button[];
-  heroImages?: {
-    data: {
-      attributes: MediaFile;
-    }[];
-  };
-  heroBackgroundType?: 'image' | 'local' | 'color';
-  heroBackgroundColor?: string;
-  heroOverlayColor?: string;
-  heroOverlayOpacity?: number;
-  heroLocalImage?: string;
-  contentSections?: ContentSectionType[];
-  servicesSectionTitle?: string;
-  servicesSectionSubtitle?: string;
-  servicesSectionDescription?: string;
-}
-
 // Content Section Base
 interface BaseContentSection {
   __component: string;
@@ -162,70 +135,116 @@ type ContentSectionType =
   | Service
   | Testimonial;
 
-// Page Types
+// Homepage Type
+interface Homepage {
+  id: number;
+  logo?: {
+    data: {
+      attributes: MediaFile;
+    };
+  };
+  navbar: NavLink[];
+  heroTitle: string;
+  heroSubtitle: string;
+  heroButtons: Button[];
+  heroImages?: {
+    data: {
+      attributes: MediaFile;
+    }[];
+  };
+  heroBackgroundType?: 'image' | 'local' | 'color';
+  heroBackgroundColor?: string;
+  heroOverlayColor?: string;
+  heroOverlayOpacity?: number;
+  heroLocalImage?: string;
+  contentSections?: ContentSectionType[];
+  servicesSectionTitle?: string;
+  servicesSectionSubtitle?: string;
+  servicesSectionDescription?: string;
+}
+
+// About Page Type
 interface AboutPage {
   id: number;
-  title: string;
   subtitle?: string;
+  title?: string;
+  heroDescription?: string;
+  audienceList?: string;
   heroImage?: {
     data: {
       attributes: MediaFile;
     };
   };
+  valuesSubtitle?: string;
+  valuesTitle?: string;
+  ctaTitle?: string;
+  ctaDescription?: string;
   contentSections?: ContentSectionType[];
 }
 
+// Services Page Type
 interface ServicesPage {
   id: number;
-  title: string;
   subtitle?: string;
+  heroTitle?: string;
+  heroDescription?: string;
   heroImage?: {
     data: {
       attributes: MediaFile;
     };
   };
-  contentSections?: ContentSectionType[];
-  heroTitle?: string;
-  heroDescription?: string;
+  benefitsSubtitle?: string;
   benefitsTitle?: string;
   benefitsDescription?: string;
+  outcomesSubtitle?: string;
   outcomesTitle?: string;
   outcomesDescription?: string;
+  processSubtitle?: string;
   processTitle?: string;
   ctaTitle?: string;
   ctaDescription?: string;
-}
-
-interface ContactPage {
-  id: number;
-  title: string;
-  subtitle?: string;
-  heroImage?: {
-    data: {
-      attributes: MediaFile;
-    };
-  };
-  email?: string;
-  phone?: string;
-  address?: string;
-  socialLinks?: {
-    linkedin?: string;
-    facebook?: string;
-    instagram?: string;
-  };
   contentSections?: ContentSectionType[];
 }
 
-interface BookPage {
+// Contact Page Type
+interface ContactPage {
   id: number;
-  title: string;
   subtitle?: string;
+  title?: string;
   heroImage?: {
     data: {
       attributes: MediaFile;
     };
   };
-  bookingLink?: string;
+  email1?: string;
+  email2?: string;
+  email3?: string;
+  phone?: string;
+  linkedinUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  formTitle?: string;
+  formDescription?: string;
+  formSubmitText?: string;
+  successMessage?: string;
+  contentSections?: ContentSectionType[];
+}
+
+// Book Page Type
+interface BookPage {
+  id: number;
+  subtitle?: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  heroImage?: {
+    data: {
+      attributes: MediaFile;
+    };
+  };
+  formTitle?: string;
+  formDescription?: string;
+  formSubmitText?: string;
+  formResponseMessage?: string;
   contentSections?: ContentSectionType[];
 }
 
@@ -286,3 +305,4 @@ export async function getBookPage(): Promise<BookPage | null> {
 }
 
 export { STRAPI_URL };
+export type { Homepage, AboutPage, ServicesPage, ContactPage, BookPage };

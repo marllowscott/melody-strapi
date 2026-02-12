@@ -3,23 +3,8 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import React from "react";
 import Layout from "@/components/layout/Layout";
-import { getAboutPage, STRAPI_URL } from "@/lib/strapi";
+import { getAboutPage, STRAPI_URL, AboutPage } from "@/lib/strapi";
 import { Award, BookOpen, Users, Heart } from "lucide-react";
-
-interface AboutPageData {
-  id: number;
-  title: string;
-  subtitle?: string;
-  heroImage?: {
-    data: {
-      attributes: {
-        url: string;
-        alternativeText?: string;
-      };
-    };
-  };
-  contentSections?: any[];
-}
 
 // Fallback static data
 const fallbackValues = [
@@ -46,7 +31,7 @@ const fallbackValues = [
 ];
 
 const About = () => {
-  const [pageData, setPageData] = useState<AboutPageData | null>(null);
+  const [pageData, setPageData] = useState<AboutPage | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,10 +54,25 @@ const About = () => {
   const getImageUrl = () => {
     if (pageData?.heroImage?.data?.attributes?.url) {
       const url = pageData.heroImage.data.attributes.url;
-      return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+      return url?.startsWith('http') ? url : `${STRAPI_URL}${url}`;
     }
     return "/melody.png";
   };
+
+  // Get title lines from CMS or fallback
+  const titleLines = pageData?.title 
+    ? pageData.title.split('\n')
+    : ["Partners in Leadership", "Development"];
+
+  // Get audience list from CMS or fallback
+  const audienceList = pageData?.audienceList 
+    ? pageData.audienceList.split('\n')
+    : [
+        "Corporates and financial institutions",
+        "Public sector and NGOs",
+        "Leadership teams and executives",
+        "Professionals and emerging leaders"
+      ];
 
   // Schema.org JSON-LD for Person
   useEffect(() => {
@@ -114,18 +114,20 @@ const About = () => {
                 {loading ? 'Loading...' : pageData?.subtitle || 'WHO WE SERVE'}
               </p>
               <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-                {loading ? 'Loading...' : pageData?.title || 'Partners in Leadership'}
-                <br />
-                <span className="text-primary">Development</span>
+                {titleLines.map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    {index < titleLines.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Our work is particularly suited to technically strong leaders whose impact depends on effective communication and presence.
+                {loading ? 'Loading...' : pageData?.heroDescription || 'Our work is particularly suited to technically strong leaders whose impact depends on effective communication and presence.'}
               </p>
               <ul className="text-lg text-muted-foreground leading-relaxed list-none md:list-disc md:list-inside">
-                <li>Corporates and financial institutions</li>
-                <li>Public sector and NGOs</li>
-                <li>Leadership teams and executives</li>
-                <li>Professionals and emerging leaders</li>
+                {audienceList.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
               </ul>
             </div>
 
@@ -143,14 +145,15 @@ const About = () => {
         </div>
       </section>
 
-
       {/* Values Section */}
       <section className="py-24 bg-background">
         <div className="mx-auto px-6 w-full max-w-full">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">STRATEGIC OUTCOMES</p>
+            <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
+              {loading ? 'Loading...' : pageData?.valuesSubtitle || 'STRATEGIC OUTCOMES'}
+            </p>
             <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-6">
-              What We Achieve
+              {loading ? 'Loading...' : pageData?.valuesTitle || 'What We Achieve'}
             </h2>
           </div>
 
@@ -180,12 +183,12 @@ const About = () => {
         <div className="w-full h-full flex items-center justify-center px-6">
           <div className="max-w-4xl text-center">
             <h2 className="text-2xl md:text-5xl font-bold text-foreground mb-6">
-              Ready to Partner
+              {loading ? 'Loading...' : pageData?.ctaTitle || 'Ready to Partner'}
               <br />
               <span className="block">?</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-10">
-              If you're developing leaders, strengthening client-facing capability or looking for a speaker, we would be glad to explore how we can support your goals.
+              {loading ? 'Loading...' : pageData?.ctaDescription || "If you're developing leaders, strengthening client-facing capability or looking for a speaker, we would be glad to explore how we can support your goals."}
             </p>
             <Button
               asChild

@@ -599,6 +599,7 @@ export interface ApiContactPageContactPage extends Struct.SingleTypeSchema {
 export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   collectionName: 'homepages';
   info: {
+    description: 'Main homepage with hero, services, about, testimonials sections';
     displayName: 'Homepage';
     pluralName: 'homepages';
     singularName: 'homepage';
@@ -644,8 +645,11 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
         number
       > &
       Schema.Attribute.DefaultTo<0.7>;
-    heroSubtitle: Schema.Attribute.Text;
-    heroTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    heroSubtitle: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'We support leaders, professionals and client-facing teams to communicate effectively in high-stakes environments \u2014 strengthening leadership communication, executive presence and professional visibility.'>;
+    heroTitle: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'Show up with confidence.\nCommunicate with clarity.\nLead with presence.'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -655,8 +659,10 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     logo: Schema.Attribute.Media<'images'>;
     navbar: Schema.Attribute.Component<'general.navlink', true>;
     publishedAt: Schema.Attribute.DateTime;
-    servicesSectionDescription: Schema.Attribute.Text;
-    servicesSectionSubtitle: Schema.Attribute.Text;
+    servicesSectionDescription: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'Our programmes are practical, application-driven and tailored to organisational context. Delivered through workshops, coaching and speaking, they are designed for immediate and sustained impact.'>;
+    servicesSectionSubtitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Practical, Application-Driven Programmes'>;
     servicesSectionTitle: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'OUR WORK'>;
     updatedAt: Schema.Attribute.DateTime;

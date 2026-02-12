@@ -6,29 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Clock, Video } from "lucide-react";
-import { getBookPage, STRAPI_URL } from "@/lib/strapi";
+import { getBookPage, STRAPI_URL, BookPage } from "@/lib/strapi";
 import { useEffect } from "react";
-
-interface BookPageData {
-  id: number;
-  title: string;
-  subtitle?: string;
-  heroImage?: {
-    data: {
-      attributes: {
-        url: string;
-        alternativeText?: string;
-      };
-    };
-  };
-  bookingLink?: string;
-  contentSections?: any[];
-}
 
 const Book = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const [pageData, setPageData] = useState<BookPageData | null>(null);
+  const [pageData, setPageData] = useState<BookPage | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

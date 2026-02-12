@@ -4,7 +4,8 @@
   "info": {
     "singularName": "homepage",
     "pluralName": "homepages",
-    "displayName": "Homepage"
+    "displayName": "Homepage",
+    "description": "Main homepage with hero, services, about, testimonials sections"
   },
   "options": {
     "draftAndPublish": false
@@ -29,10 +30,12 @@
     },
     "heroTitle": {
       "type": "string",
-      "required": true
+      "required": true,
+      "default": "Show up with confidence.\nCommunicate with clarity.\nLead with presence."
     },
     "heroSubtitle": {
-      "type": "text"
+      "type": "text",
+      "default": "We support leaders, professionals and client-facing teams to communicate effectively in high-stakes environments — strengthening leadership communication, executive presence and professional visibility."
     },
     "heroButtons": {
       "type": "component",
@@ -76,6 +79,18 @@
         "images"
       ]
     },
+    "servicesSectionTitle": {
+      "type": "string",
+      "default": "OUR WORK"
+    },
+    "servicesSectionSubtitle": {
+      "type": "string",
+      "default": "Practical, Application-Driven Programmes"
+    },
+    "servicesSectionDescription": {
+      "type": "text",
+      "default": "Our programmes are practical, application-driven and tailored to organisational context. Delivered through workshops, coaching and speaking, they are designed for immediate and sustained impact."
+    },
     "contentSections": {
       "type": "dynamiczone",
       "components": [
@@ -86,16 +101,6 @@
         "sections.service",
         "sections.testimonial"
       ]
-    },
-    "servicesSectionTitle": {
-      "type": "string",
-      "default": "OUR WORK"
-    },
-    "servicesSectionSubtitle": {
-      "type": "text"
-    },
-    "servicesSectionDescription": {
-      "type": "text"
     }
   }
 }

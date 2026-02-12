@@ -6,36 +6,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin } from "lucide-react";
-import { getContactPage, STRAPI_URL } from "@/lib/strapi";
+import { getContactPage, STRAPI_URL, ContactPage } from "@/lib/strapi";
 import { useEffect } from "react";
-
-interface ContactPageData {
-  id: number;
-  title: string;
-  subtitle?: string;
-  heroImage?: {
-    data: {
-      attributes: {
-        url: string;
-        alternativeText?: string;
-      };
-    };
-  };
-  email?: string;
-  phone?: string;
-  address?: string;
-  socialLinks?: {
-    linkedin?: string;
-    facebook?: string;
-    instagram?: string;
-  };
-  contentSections?: any[];
-}
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  const [pageData, setPageData] = useState<ContactPageData | null>(null);
+  const [pageData, setPageData] = useState<ContactPage | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

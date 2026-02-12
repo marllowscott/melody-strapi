@@ -4,7 +4,8 @@
   "info": {
     "singularName": "about-page",
     "pluralName": "about-pages",
-    "displayName": "About Page"
+    "displayName": "About Page",
+    "description": "Who We Serve page with hero, values/outcomes section and CTA"
   },
   "options": {
     "draftAndPublish": false
@@ -15,12 +16,21 @@
     }
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "subtitle": {
-      "type": "string"
+      "type": "string",
+      "default": "WHO WE SERVE"
+    },
+    "title": {
+      "type": "text",
+      "default": "Partners in Leadership\nDevelopment"
+    },
+    "heroDescription": {
+      "type": "text",
+      "default": "Our work is particularly suited to technically strong leaders whose impact depends on effective communication and presence."
+    },
+    "audienceList": {
+      "type": "text",
+      "default": "Corporates and financial institutions\nPublic sector and NGOs\nLeadership teams and executives\nProfessionals and emerging leaders"
     },
     "heroImage": {
       "type": "media",
@@ -28,6 +38,22 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "valuesSubtitle": {
+      "type": "string",
+      "default": "STRATEGIC OUTCOMES"
+    },
+    "valuesTitle": {
+      "type": "string",
+      "default": "What We Achieve"
+    },
+    "ctaTitle": {
+      "type": "string",
+      "default": "Ready to Partner?"
+    },
+    "ctaDescription": {
+      "type": "text",
+      "default": "If you're developing leaders, strengthening client-facing capability or looking for a speaker, we would be glad to explore how we can support your goals."
     },
     "contentSections": {
       "type": "dynamiczone",

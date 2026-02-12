@@ -4,7 +4,8 @@
   "info": {
     "singularName": "services-page",
     "pluralName": "services-pages",
-    "displayName": "Services Page"
+    "displayName": "Services Page",
+    "description": "Our Work / Services page with programmes, benefits, outcomes, delivery options and CTA"
   },
   "options": {
     "draftAndPublish": false
@@ -15,12 +16,17 @@
     }
   },
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "subtitle": {
-      "type": "string"
+      "type": "string",
+      "default": "OUR WORK"
+    },
+    "heroTitle": {
+      "type": "text",
+      "default": "Practical, Application-Driven\nProgrammes"
+    },
+    "heroDescription": {
+      "type": "text",
+      "default": "Our programmes are practical, application-driven and tailored to organisational context. Delivered through workshops, coaching and speaking, they are designed for immediate and sustained impact."
     },
     "heroImage": {
       "type": "media",
@@ -29,36 +35,33 @@
         "images"
       ]
     },
-    "contentSections": {
-      "type": "dynamiczone",
-      "components": [
-        "sections.service",
-        "sections.text-card",
-        "sections.text-image",
-        "sections.testimonial",
-        "sections.number"
-      ]
-    },
-    "heroTitle": {
+    "benefitsSubtitle": {
       "type": "string",
-      "default": "Practical, Application-Driven\nProgrammes"
-    },
-    "heroDescription": {
-      "type": "text"
+      "default": "CORPORATE PROGRAMMES"
     },
     "benefitsTitle": {
-      "type": "string",
-      "default": "Leadership Communication Development"
+      "type": "text",
+      "default": "Leadership\nCommunication\nDevelopment"
     },
     "benefitsDescription": {
-      "type": "text"
+      "type": "text",
+      "default": "Our programmes strengthen how leaders communicate, show up and influence, particularly where clarity, confidence and credibility are critical."
+    },
+    "outcomesSubtitle": {
+      "type": "string",
+      "default": "CLIENT-FACING & CUSTOMER ENGAGEMENT"
     },
     "outcomesTitle": {
       "type": "string",
       "default": "Building Confidence in Client Interactions"
     },
     "outcomesDescription": {
-      "type": "text"
+      "type": "text",
+      "default": "Programmes designed to enhance communication and presence in client-facing roles."
+    },
+    "processSubtitle": {
+      "type": "string",
+      "default": "DELIVERY FORMATS"
     },
     "processTitle": {
       "type": "string",
@@ -69,7 +72,18 @@
       "default": "Ready to Partner?"
     },
     "ctaDescription": {
-      "type": "text"
+      "type": "text",
+      "default": "If you're developing leaders, strengthening client-facing capability or looking for a speaker, we would be glad to explore how we can support your goals."
+    },
+    "contentSections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.service",
+        "sections.text-card",
+        "sections.text-image",
+        "sections.testimonial",
+        "sections.number"
+      ]
     }
   }
 }
