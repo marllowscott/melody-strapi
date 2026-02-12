@@ -6,10 +6,54 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, MapPin } from "lucide-react";
+import { getContactPage, STRAPI_URL } from "@/lib/strapi";
+import { useEffect } from "react";
+
+interface ContactPageData {
+  id: number;
+  title: string;
+  subtitle?: string;
+  heroImage?: {
+    data: {
+      attributes: {
+        url: string;
+        alternativeText?: string;
+      };
+    };
+  };
+  email?: string;
+  phone?: string;
+  address?: string;
+  socialLinks?: {
+    linkedin?: string;
+    facebook?: string;
+    instagram?: string;
+  };
+  contentSections?: any[];
+}
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [pageData, setPageData] = useState<ContactPageData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getContactPage();
+        if (data) {
+          setPageData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching contact page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,10 +98,10 @@ const Contact = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center mb-16 -mt-[77px] md:mt-0">
             <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
-              CONTACT
+              {loading ? 'Loading...' : pageData?.subtitle || 'CONTACT'}
             </p>
             <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Get in <span className="text-primary">Touch</span>
+              {loading ? 'Loading...' : pageData?.title || 'Get in'} <span className="text-primary">Touch</span>
             </h1>
           </div>
 

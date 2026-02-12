@@ -39,6 +39,36 @@
       "component": "general.button",
       "repeatable": true
     },
+    "heroBackgroundType": {
+      "type": "enumeration",
+      "enum": [
+        "image",
+        "local",
+        "color"
+      ],
+      "default": "local"
+    },
+    "heroBackgroundColor": {
+      "type": "string",
+      "regex": "^#[0-9A-Fa-f]{6}$",
+      "required": false
+    },
+    "heroOverlayColor": {
+      "type": "string",
+      "default": "#060621",
+      "required": false
+    },
+    "heroOverlayOpacity": {
+      "type": "decimal",
+      "min": 0,
+      "max": 1,
+      "default": 0.7,
+      "required": false
+    },
+    "heroLocalImage": {
+      "type": "string",
+      "required": false
+    },
     "heroImages": {
       "type": "media",
       "multiple": true,
@@ -51,7 +81,10 @@
       "components": [
         "sections.text-card",
         "sections.number",
-        "sections.text-image"
+        "sections.text-image",
+        "sections.about-section",
+        "sections.service",
+        "sections.testimonial"
       ]
     }
   }

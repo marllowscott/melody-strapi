@@ -1,7 +1,25 @@
-import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import React from "react";
+import Layout from "@/components/layout/Layout";
+import { getServicesPage, STRAPI_URL } from "@/lib/strapi";
 import { Check, Sparkles, Target } from "lucide-react";
+
+interface ServicesPageData {
+  id: number;
+  title: string;
+  subtitle?: string;
+  heroImage?: {
+    data: {
+      attributes: {
+        url: string;
+        alternativeText?: string;
+      };
+    };
+  };
+  contentSections?: any[];
+}
 
 const ClarityIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="w-8 h-8 text-primary">
@@ -51,6 +69,9 @@ const ConnectionIcon = () => (
 );
 
 const ServicesPage = () => {
+  const [pageData, setPageData] = useState<ServicesPageData | null>(null);
+  const [loading, setLoading] = useState(true);
+
   const benefits = [
     "Leadership Communication & Executive Presence: Strengthen how leaders communicate and show up in high-stakes environments. Ideal for executives and senior leaders.",
     "Public Speaking for Leaders: Master the art of delivering impactful presentations and speeches. Ideal for leaders who need to influence and inspire audiences.",
@@ -76,6 +97,31 @@ const ServicesPage = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getServicesPage();
+        if (data) {
+          setPageData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching services page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getImageUrl = () => {
+    if (pageData?.heroImage?.data?.attributes?.url) {
+      const url = pageData.heroImage.data.attributes.url;
+      return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+    }
+    return "/team.png";
+  };
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -83,10 +129,10 @@ const ServicesPage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center -mt-[77px] md:mt-0">
             <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
-              OUR WORK
+              {loading ? 'Loading...' : pageData?.subtitle || 'OUR WORK'}
             </p>
             <h1 className="text-2xl md:text-5xl font-bold text-foreground mb-6 leading-tight break-words opacity-0 animate-fade-up delay-100 text-center">
-              Practical, Application-Driven
+              {loading ? 'Loading...' : pageData?.title || 'Practical, Application-Driven'}
               <br />
               <span className="text-primary">Programmes</span>
             </h1>
@@ -129,8 +175,8 @@ const ServicesPage = () => {
             <div className="relative">
               <div className="aspect-[4/3] rounded-lg overflow-hidden">
                 <img
-                  src="/team.png"
-                  alt="Professional coaching team"
+                  src={getImageUrl()}
+                  alt={pageData?.heroImage?.data?.attributes?.alternativeText || "Professional coaching team"}
                   className="w-full h-full object-cover"
                 />
               </div>

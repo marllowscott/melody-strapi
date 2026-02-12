@@ -23,6 +23,11 @@ interface HomepageData {
       };
     }[];
   };
+  heroBackgroundType?: 'image' | 'local' | 'color';
+  heroBackgroundColor?: string;
+  heroOverlayColor?: string;
+  heroOverlayOpacity?: number;
+  heroLocalImage?: string;
 }
 
 // Fallback data when CMS is offline
@@ -75,12 +80,12 @@ const Hero = () => {
     fetchData();
   }, []);
 
-  const lines = [
-    "Show up with confidence.",
-    "Communicate with clarity.",
-    "Lead with presence."
-  ];
-  const fullText = lines.join('\n');
+  // Get headline lines from CMS or fallback
+  const heroLines = homepageData?.heroTitle 
+    ? homepageData.heroTitle.split('\n')
+    : ["Show up with confidence.", "Communicate with clarity.", "Lead with presence."];
+  
+  const fullText = heroLines.join('\n');
   const [letterStates, setLetterStates] = useState<boolean[]>(() => new Array(fullText.length).fill(false));
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -108,28 +113,55 @@ const Hero = () => {
     return index === 0 ? 'default' : 'outline';
   };
 
-  const getHeroImage = () => {
-    if (homepageData?.heroImages?.data?.length) {
+  // Determine hero background based on CMS settings
+  const getHeroBackground = () => {
+    const backgroundType = homepageData?.heroBackgroundType || 'local';
+    
+    if (backgroundType === 'color' && homepageData?.heroBackgroundColor) {
+      return { backgroundColor: homepageData.heroBackgroundColor };
+    }
+    
+    if (backgroundType === 'image' && homepageData?.heroImages?.data?.length) {
       const imageUrl = homepageData.heroImages.data[0]?.attributes?.url;
       if (imageUrl) {
-        return imageUrl.startsWith('http') ? imageUrl : `${STRAPI_URL}${imageUrl}`;
+        return { 
+          backgroundImage: `url(${imageUrl.startsWith('http') ? imageUrl : `${STRAPI_URL}${imageUrl}`})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        };
       }
     }
-    return currentImage;
+    
+    if (backgroundType === 'local' || !backgroundType) {
+      return { backgroundImage: `url(${currentImage})`, backgroundSize: 'cover', backgroundPosition: 'center' };
+    }
+    
+    return { backgroundColor: '#1a1a1a' }; // Default fallback
   };
 
   return (
     <section className="relative min-h-[100vh] md:min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background Image from Strapi */}
-      {homepageData?.heroImages?.data?.length ? (
+      {/* Background - Dynamic based on CMS settings */}
+      {homepageData?.heroBackgroundType === 'color' ? (
+        <div 
+          className="absolute inset-0 z-0"
+          style={{ backgroundColor: homepageData.heroBackgroundColor || '#1a1a1a' }}
+        />
+      ) : (
         <div 
           className="absolute inset-0 bg-cover bg-center z-0"
-          style={{ backgroundImage: `url(${getHeroImage()})` }}
+          style={getHeroBackground()}
         />
-      ) : null}
+      )}
       
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-black/50 z-10" />
+      {/* Background Overlay - Navy blue with adjustable opacity */}
+      <div 
+        className="absolute inset-0 z-10"
+        style={{ 
+          backgroundColor: homepageData?.heroOverlayColor || '#060621',
+          opacity: homepageData?.heroOverlayOpacity ?? 0.88
+        }}
+      />
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-20">
@@ -137,25 +169,38 @@ const Hero = () => {
           <div className="max-w-4xl lg:mr-12 text-center md:text-left">
             {/* Main Headline */}
             <h1 className="hidden md:block text-4xl md:text-5xl lg:text-5xl font-bold leading-[0.95] mb-8 opacity-0 animate-fade-up delay-100">
-              <span className="text-foreground">Show up with confidence.</span>
-              <br />
-              <span className="text-primary">Communicate with clarity.</span>
-              <br />
-              <span className="text-foreground">Lead with presence.</span>
+              {homepageData?.heroTitle ? (
+                homepageData.heroTitle.split('\n').map((line: string, lineIndex: number) => (
+                  <React.Fragment key={lineIndex}>
+                    <span className={lineIndex === 1 || lineIndex === 2 ? 'text-primary' : 'text-foreground'}>
+                      {line}
+                    </span>
+                    {lineIndex < homepageData.heroTitle.split('\n').length - 1 && <br />}
+                  </React.Fragment>
+                ))
+              ) : (
+                <>
+                  <span className="text-foreground">Show up with confidence.</span>
+                  <br />
+                  <span className="text-primary">Communicate with clarity.</span>
+                  <br />
+                  <span className="text-primary">Lead with presence.</span>
+                </>
+              )}
             </h1>
 
             <h1 className="block md:hidden text-3xl font-light leading-[0.95] mb-8 opacity-0 animate-fade-up delay-100">
-              {lines.map((line, lineIndex) => (
+              {heroLines.map((line, lineIndex) => (
                 <React.Fragment key={lineIndex}>
                   {line.split('').map((char, charIndex) => {
-                    const globalIndex = lines.slice(0, lineIndex).reduce((acc, l) => acc + l.length, 0) + charIndex;
+                    const globalIndex = heroLines.slice(0, lineIndex).reduce((acc, l) => acc + l.length, 0) + charIndex;
                     return (
                       <span key={globalIndex} className={letterStates[globalIndex] ? 'text-primary font-bold' : 'text-foreground'}>
                         {char}
                       </span>
                     );
                   })}
-                  {lineIndex < lines.length - 1 && <br />}
+                  {lineIndex < heroLines.length - 1 && <br />}
                 </React.Fragment>
               ))}
             </h1>
@@ -218,7 +263,12 @@ const Hero = () => {
           {/* Desktop Inline Illustration */}
           <div className="hidden lg:flex relative w-[500px] h-auto mt-8 lg:mt-0 justify-center items-center">
             <img 
-              src={getHeroImage()} 
+              src={homepageData?.heroImages?.data?.[0]?.attributes?.url 
+                ? (homepageData.heroImages.data[0].attributes.url.startsWith('http') 
+                    ? homepageData.heroImages.data[0].attributes.url 
+                    : `${STRAPI_URL}${homepageData.heroImages.data[0].attributes.url}`)
+                : currentImage
+              }
               alt="Hero illustration" 
               className="w-full h-auto transition-subtle rounded-[7px]"
               style={{ borderRadius: '7px' }}

@@ -1,0 +1,45 @@
+{
+  "kind": "singleType",
+  "collectionName": "book_pages",
+  "info": {
+    "singularName": "book-page",
+    "pluralName": "book-pages",
+    "displayName": "Book Page"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": false
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "heroImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "bookingLink": {
+      "type": "string"
+    },
+    "contentSections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.text-image",
+        "sections.text-card",
+        "sections.testimonial",
+        "sections.number"
+      ]
+    }
+  }
+}

@@ -6,10 +6,47 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Clock, Video } from "lucide-react";
+import { getBookPage, STRAPI_URL } from "@/lib/strapi";
+import { useEffect } from "react";
+
+interface BookPageData {
+  id: number;
+  title: string;
+  subtitle?: string;
+  heroImage?: {
+    data: {
+      attributes: {
+        url: string;
+        alternativeText?: string;
+      };
+    };
+  };
+  bookingLink?: string;
+  contentSections?: any[];
+}
 
 const Book = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [pageData, setPageData] = useState<BookPageData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getBookPage();
+        if (data) {
+          setPageData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching book page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,12 +107,15 @@ const Book = () => {
           <div className="max-w-4xl mx-auto text-center mb-16 -mt-[77px] md:mt-0">
             <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">SPEAKING & COACHING</p>
             <h1 className="text-3xl md:text-6xl font-bold text-foreground mb-6 leading-tight break-words">
-              Melody<span className="hidden md:inline"> — </span>Confidence Coach &
+              {loading ? 'Loading...' : pageData?.title || 'Melody'}
+              <span className="hidden md:inline"> — </span>
+              <br />
+              <span className="text-primary">Confidence Coach &</span>
               <br />
               <span className="text-primary">Leadership Consultant</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-full md:max-w-2xl mx-auto">
-              Melody specialises in leadership communication, executive presence and visibility. She works with executives, professionals and emerging leaders to strengthen how they show up, communicate and influence, particularly in meetings, presentations, client engagements and other high-stakes moments.
+              {loading ? 'Loading...' : pageData?.subtitle || 'Melody specialises in leadership communication, executive presence and visibility. She works with executives, professionals and emerging leaders to strengthen how they show up, communicate and influence, particularly in meetings, presentations, client engagements and other high-stakes moments.'}
             </p>
           </div>
 

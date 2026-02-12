@@ -1,31 +1,106 @@
-import Layout from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import React from "react";
+import Layout from "@/components/layout/Layout";
+import { getAboutPage, STRAPI_URL } from "@/lib/strapi";
 import { Award, BookOpen, Users, Heart } from "lucide-react";
 
+interface AboutPageData {
+  id: number;
+  title: string;
+  subtitle?: string;
+  heroImage?: {
+    data: {
+      attributes: {
+        url: string;
+        alternativeText?: string;
+      };
+    };
+  };
+  contentSections?: any[];
+}
+
+// Fallback static data
+const fallbackValues = [
+  {
+    icon: Heart,
+    title: "Leadership Pipeline Development",
+    description: "Building strong leaders ready to take on greater responsibilities.",
+  },
+  {
+    icon: BookOpen,
+    title: "Succession Readiness and Talent Visibility",
+    description: "Preparing leaders for succession and increasing their visibility within the organization.",
+  },
+  {
+    icon: Users,
+    title: "Stakeholder Confidence and Executive Readiness",
+    description: "Enhancing confidence in stakeholder interactions and executive-level readiness.",
+  },
+  {
+    icon: Award,
+    title: "Team Alignment and Performance",
+    description: "Aligning teams through effective communication and improving overall performance.",
+  },
+];
+
 const About = () => {
-  const values = [
-    {
-      icon: Heart,
-      title: "Leadership Pipeline Development",
-      description: "Building strong leaders ready to take on greater responsibilities.",
-    },
-    {
-      icon: BookOpen,
-      title: "Succession Readiness and Talent Visibility",
-      description: "Preparing leaders for succession and increasing their visibility within the organization.",
-    },
-    {
-      icon: Users,
-      title: "Stakeholder Confidence and Executive Readiness",
-      description: "Enhancing confidence in stakeholder interactions and executive-level readiness.",
-    },
-    {
-      icon: Award,
-      title: "Team Alignment and Performance",
-      description: "Aligning teams through effective communication and improving overall performance.",
-    },
-  ];
+  const [pageData, setPageData] = useState<AboutPageData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getAboutPage();
+        if (data) {
+          setPageData(data);
+        }
+      } catch (error) {
+        console.error('Error fetching about page data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getImageUrl = () => {
+    if (pageData?.heroImage?.data?.attributes?.url) {
+      const url = pageData.heroImage.data.attributes.url;
+      return url.startsWith('http') ? url : `${STRAPI_URL}${url}`;
+    }
+    return "/melody.png";
+  };
+
+  // Schema.org JSON-LD for Person
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const personSchema = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Melody",
+        "jobTitle": "Communication Coach",
+        "description": "Professional communication coach helping executives and entrepreneurs enhance their communication skills.",
+        "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2",
+        "url": window.location.href,
+        "sameAs": [
+          "https://www.linkedin.com/in/melody-chipo-njanji-makuwaza-65b1782a",
+          "https://www.facebook.com/DialoguesWithMel",
+          "https://www.instagram.com/dialogueswithmel/"
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(personSchema);
+      document.head.appendChild(script);
+
+      return () => {
+        document.head.removeChild(script);
+      };
+    }
+  }, []);
 
   return (
     <Layout>
@@ -35,9 +110,11 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Content */}
             <div className="text-center md:text-left -mt-[70px] md:mt-0">
-              <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">WHO WE SERVE</p>
+              <p className="text-primary font-semibold tracking-[0.3em] text-sm mb-4">
+                {loading ? 'Loading...' : pageData?.subtitle || 'WHO WE SERVE'}
+              </p>
               <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-                Partners in Leadership
+                {loading ? 'Loading...' : pageData?.title || 'Partners in Leadership'}
                 <br />
                 <span className="text-primary">Development</span>
               </h1>
@@ -56,8 +133,8 @@ const About = () => {
             <div className="relative">
               <div className="aspect-[3/4] rounded-lg overflow-hidden">
                 <img
-                  src="/melody.png"
-                  alt="Melody - Communication Coach"
+                  src={getImageUrl()}
+                  alt={pageData?.heroImage?.data?.attributes?.alternativeText || "Melody - Communication Coach"}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -78,7 +155,7 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
+            {fallbackValues.map((value, index) => (
               <div
                 key={index}
                 className="text-center p-8"

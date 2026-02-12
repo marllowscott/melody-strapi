@@ -8,7 +8,7 @@ const Header = () => {
   const location = useLocation();
 
   const navLinks = [
-    { path: "/", label: "Overview" },
+    { path: "/", label: "Home" },
     { path: "/services", label: "Our Work" },
     { path: "/about", label: "Who We Serve" },
     { path: "/book", label: "Speaking & Coaching" },
@@ -18,7 +18,7 @@ const Header = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border overflow-x-hidden">
+    <header className="fixed top-0 left-0 right-0 z-50 overflow-x-hidden shadow-lg" style={{ backgroundColor: '#060621', backdropFilter: 'blur(4px)' }}>
       <div className="container mx-auto px-6 py-4">
         <nav className="flex items-center justify-between">
           {/* Logo */}
