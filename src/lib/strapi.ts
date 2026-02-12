@@ -244,31 +244,31 @@ async function fetchAPI<T>(endpoint: string): Promise<T | null> {
 }
 
 export async function getHomepage(): Promise<Homepage | null> {
-  const data = await fetchAPI<StrapiResponse<Homepage>>('/api/homepage?populate=deep');
+  const data = await fetchAPI<StrapiResponse<Homepage>>('/api/homepage?populate=*');
   if (!data) return null;
   return data.data;
 }
 
 export async function getAboutPage(): Promise<AboutPage | null> {
-  const data = await fetchAPI<StrapiResponse<AboutPage>>('/api/about-page?populate=deep');
+  const data = await fetchAPI<StrapiResponse<AboutPage>>('/api/about-page?populate=*');
   if (!data) return null;
   return data.data;
 }
 
 export async function getServicesPage(): Promise<ServicesPage | null> {
-  const data = await fetchAPI<StrapiResponse<ServicesPage>>('/api/services-page?populate=deep');
+  const data = await fetchAPI<StrapiResponse<ServicesPage>>('/api/services-page?populate=*');
   if (!data) return null;
   return data.data;
 }
 
 export async function getContactPage(): Promise<ContactPage | null> {
-  const data = await fetchAPI<StrapiResponse<ContactPage>>('/api/contact-page?populate=deep');
+  const data = await fetchAPI<StrapiResponse<ContactPage>>('/api/contact-page?populate=*');
   if (!data) return null;
   return data.data;
 }
 
 export async function getBookPage(): Promise<BookPage | null> {
-  const data = await fetchAPI<StrapiResponse<BookPage>>('/api/book-page?populate=deep');
+  const data = await fetchAPI<StrapiResponse<BookPage>>('/api/book-page?populate=*');
   if (!data) return null;
   return data.data;
 }
