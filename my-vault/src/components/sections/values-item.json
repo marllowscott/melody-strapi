@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_sections_values_items",
+  "info": {
+    "displayName": "Values Item",
+    "description": "Strategic outcome item with title and description"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Strategic Outcome Title"
+    },
+    "description": {
+      "type": "text",
+      "default": "Description of the strategic outcome"
+    }
+  }
+}
