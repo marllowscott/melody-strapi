@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_sections_values_sections",
+  "info": {
+    "displayName": "Values Section",
+    "description": "Section with subtitle, title, and repeatable outcome items"
+  },
+  "attributes": {
+    "subtitle": {
+      "type": "string",
+      "default": "STRATEGIC OUTCOMES"
+    },
+    "title": {
+      "type": "string",
+      "default": "What We Achieve"
+    },
+    "items": {
+      "type": "component",
+      "component": "sections.values-item",
+      "repeatable": true,
+      "min": 1,
+      "max": 10
+    }
+  }
+}

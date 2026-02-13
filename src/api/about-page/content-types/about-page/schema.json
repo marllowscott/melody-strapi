@@ -39,23 +39,6 @@
         "images"
       ]
     },
-    "valuesSubtitle": {
-      "type": "string",
-      "default": "STRATEGIC OUTCOMES"
-    },
-    "valuesTitle": {
-      "type": "string",
-      "default": "What We Achieve"
-    },
-    "valuesList": {
-      "type": "json",
-      "default": [
-        { "id": 1, "title": "Leadership Pipeline Development", "description": "Building strong leaders ready to take on greater responsibilities." },
-        { "id": 2, "title": "Succession Readiness and Talent Visibility", "description": "Preparing leaders for succession and increasing their visibility within the organization." },
-        { "id": 3, "title": "Stakeholder Confidence and Executive Readiness", "description": "Enhancing confidence in stakeholder interactions and executive-level readiness." },
-        { "id": 4, "title": "Team Alignment and Performance", "description": "Aligning teams through effective communication and improving overall performance." }
-      ]
-    },
     "ctaTitle": {
       "type": "string",
       "default": "Ready to Partner?"
@@ -71,6 +54,7 @@
     "contentSections": {
       "type": "dynamiczone",
       "components": [
+        "sections.values-section",
         "sections.text-card",
         "sections.text-image",
         "sections.number",
