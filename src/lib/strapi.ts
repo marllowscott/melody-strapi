@@ -114,6 +114,21 @@ interface OutcomeItem {
   description?: string;
 }
 
+// Values List Item Component
+interface ValuesItem {
+  id: number;
+  __component: 'sections.values-item';
+  title?: string;
+  description?: string;
+}
+
+// Values List Item (legacy - for backward compatibility)
+interface ValuesListItem {
+  id: number;
+  title?: string;
+  description?: string;
+}
+
 // Process Item Component
 interface ProcessItem {
   id: number;
@@ -148,7 +163,8 @@ type ContentSectionType =
   | TextImageSection
   | AboutSection
   | Service
-  | Testimonial;
+  | Testimonial
+  | ValuesItem;
 
 // Homepage Type
 interface Homepage {
@@ -192,8 +208,10 @@ interface AboutPage {
   };
   valuesSubtitle?: string;
   valuesTitle?: string;
+  valuesList?: (ValuesItem | ValuesListItem)[];
   ctaTitle?: string;
   ctaDescription?: string;
+  ctaButtonText?: string;
   contentSections?: ContentSectionType[];
 }
 

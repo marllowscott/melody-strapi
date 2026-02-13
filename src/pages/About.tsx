@@ -6,6 +6,17 @@ import Layout from "@/components/layout/Layout";
 import { getAboutPage, STRAPI_URL, AboutPage } from "@/lib/strapi";
 import { Award, BookOpen, Users, Heart } from "lucide-react";
 
+// Icon mapping based on title
+const getIconByTitle = (title?: string) => {
+  if (!title) return Heart;
+  const lower = title.toLowerCase();
+  if (lower.includes('pipeline')) return Heart;
+  if (lower.includes('succession') || lower.includes('talent')) return BookOpen;
+  if (lower.includes('stakeholder') || lower.includes('confidence')) return Users;
+  if (lower.includes('team') || lower.includes('alignment')) return Award;
+  return Heart;
+};
+
 // Fallback static data
 const fallbackValues = [
   {
@@ -63,6 +74,20 @@ const About = () => {
   const titleLines = pageData?.title 
     ? pageData.title.split('\n')
     : ["Partners in Leadership", "Development"];
+
+  // Get values list from CMS or fallback
+  const getValuesList = () => {
+    if (pageData?.valuesList && Array.isArray(pageData.valuesList)) {
+      return pageData.valuesList.map((item) => ({
+        icon: getIconByTitle(item.title),
+        title: item.title || '',
+        description: item.description || '',
+      }));
+    }
+    return fallbackValues;
+  };
+
+  const valuesList = getValuesList();
 
   // Get audience list from CMS or fallback
   const audienceList = pageData?.audienceList 
@@ -158,7 +183,7 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {fallbackValues.map((value, index) => (
+            {valuesList.map((value, index) => (
               <div
                 key={index}
                 className="text-center p-8"
@@ -195,7 +220,7 @@ const About = () => {
               size="lg"
               className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 font-semibold text-lg px-7 py-6 group"
             >
-              <Link to="/contact">Request a Conversation</Link>
+              <Link to="/contact">{pageData?.ctaButtonText || 'Request a Conversation'}</Link>
             </Button>
           </div>
         </div>

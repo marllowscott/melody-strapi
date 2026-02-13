@@ -47,6 +47,12 @@
       "type": "string",
       "default": "What We Achieve"
     },
+    "valuesList": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.values-item"
+      ]
+    },
     "ctaTitle": {
       "type": "string",
       "default": "Ready to Partner?"
@@ -54,6 +60,10 @@
     "ctaDescription": {
       "type": "text",
       "default": "If you're developing leaders, strengthening client-facing capability or looking for a speaker, we would be glad to explore how we can support your goals."
+    },
+    "ctaButtonText": {
+      "type": "string",
+      "default": "Request a Conversation"
     },
     "contentSections": {
       "type": "dynamiczone",
